@@ -1,0 +1,24 @@
+// 引入其他模块
+@import './var.scss';
+
+p {
+  font-size: 36px;
+  color: $primary-color;
+  border: $basic-border;
+}
+
+div {
+  span {
+    background-color: $primary-color;
+    font-size: 24px;
+  }
+  &:hover {
+    background-color: pink;
+    font-size: 30px;
+  }
+}
+
+// div:hover {
+//   background-color: pink;
+//   font-size: 30px;
+// }

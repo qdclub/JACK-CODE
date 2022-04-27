@@ -68,6 +68,7 @@ export default {
   },
   methods: {
     fetchData() {
+      // this.$http.get('url').then()
       this.listLoading = true
       getList().then(response => {
         this.list = response.data.items

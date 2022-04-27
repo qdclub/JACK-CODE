@@ -3,6 +3,8 @@
 @import './transition.scss';
 @import './element-ui.scss';
 @import './sidebar.scss';
+// 所有的样式都需要在 index.scss 中引入, index.scss 相当于做了一个整合
+@import './common.scss';
 
 body {
   height: 100%;
