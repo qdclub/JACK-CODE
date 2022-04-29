@@ -66,6 +66,7 @@
 
 <script>
 import { validMobile } from '@/utils/validate'
+import { login } from '@/api/user'
 
 export default {
   name: 'Login',
@@ -75,13 +76,6 @@ export default {
     const validateMobile = (rule, value, callback) => {
       if (!validMobile(value)) {
         callback(new Error('请输入正确格式的手机号'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
       } else {
         callback()
       }
@@ -101,7 +95,10 @@ export default {
           { required: true, trigger: 'blur', message: '请输入手机号' },
           { trigger: 'blur', validator: validateMobile }
         ],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        password: [
+          { required: true, trigger: 'blur', message: '请输入密码' },
+          { min: 6, max: 16, trigger: 'blur', message: '请输入 6 ~ 16 位的密码' }
+        ]
       },
       loading: false,
       passwordType: 'password',
@@ -128,18 +125,12 @@ export default {
       })
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+      // 兜底校验
+      this.$refs.loginForm.validate(async valid => {
         if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
-          }).catch(() => {
-            this.loading = false
-          })
-        } else {
-          console.log('error submit!!')
-          return false
+          // this.$http() 这个代码封装到 login 函数中了
+          const res = await login(this.loginForm)
+          console.log(res)
         }
       })
     }

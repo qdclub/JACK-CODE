@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
+  // baseURL: process.env.VUE_APP_BASE_API,
+  baseURL: 'http://ihrm-java.itheima.net',
   // 请求超时的等待时间
   timeout: 5000 // request timeout
 })
