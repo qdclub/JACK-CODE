@@ -68,7 +68,7 @@
 
 <script>
 import { validMobile } from '@/utils/validate'
-import { getProfile, login } from '@/api/user'
+import { getProfile } from '@/api/user'
 
 export default {
   name: 'Login',
@@ -133,18 +133,27 @@ export default {
           // login(this.loginForm).then().catch()
           // this.$http() 这个代码封装到 login 函数中了
 
+          // 改造前: 在组件内发请求, 调用 mutations 操作 state
           // try 代码块包裹「可能」会出错的代码
           // 网络请求就是可能正确也有可能错误
+          // try {
+          //   const res = await login(this.loginForm)
+          //   // console.log(res)
+          //   // 调用 mutations 将 token 存入 vuex
+          //   this.$store.commit('user/updateToken', res.data)
+          //   // 如果没有拦截器, 还需要在此处判断 success
+          //   // if (res.code !== 0) // 大事件
+          //   // if (!res.success) // 人资
+          // } catch (e) {
+          //   // console.dir(e)
+          //   this.$message.error(e.message)
+          // }
+
+          // 改造后: 在 actions 发请求, 组件内只需要调用 actions 即可
+          // 如果需要捕获到异常, 要在 dispatch 前加 await 等待请求完成
           try {
-            const res = await login(this.loginForm)
-            // console.log(res)
-            // 调用 mutations 将 token 存入 vuex
-            this.$store.commit('user/updateToken', res.data)
-            // 如果没有拦截器, 还需要在此处判断 success
-            // if (res.code !== 0) // 大事件
-            // if (!res.success) // 人资
+            await this.$store.dispatch('user/postLogin', this.loginForm)
           } catch (e) {
-            // console.dir(e)
             this.$message.error(e.message)
           }
         }

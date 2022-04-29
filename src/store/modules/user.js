@@ -1,19 +1,39 @@
+import { setToken, getToken, removeToken } from '@/utils/auth'
+import { login } from '@/api/user'
+// import { Message } from 'element-ui'
+
 export default {
   namespaced: true,
   state: {
-    token: ''
+    // 首次加载在 Cookies 中取值
+    token: getToken() || ''
   },
   mutations: {
     // 定义 mutations 来操作 token
     updateToken(state, token) {
       state.token = token
+      // 存到本地 Cookies 中
+      setToken(token)
     },
     // 删除 token
     removeToken(state) {
       state.token = ''
+      // 删除 Cookies 中的 token
+      removeToken()
     }
   },
-  actions: {}
+  actions: {
+    async postLogin(context, loginForm) {
+      // try {
+      // 发请求登录
+      const res = await login(loginForm)
+      // 将 token 交给 mutations 存入 state
+      context.commit('updateToken', res.data)
+      // } catch (e) {
+      //   Message.error(e.message)
+      // }
+    }
+  }
 }
 
 // import { login, logout, getInfo } from '@/api/user'
