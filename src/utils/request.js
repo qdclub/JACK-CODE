@@ -1,17 +1,18 @@
 import axios from 'axios'
 
 const service = axios.create({
-  // baseURL: process.env.VUE_APP_BASE_API,
-  baseURL: 'http://ihrm-java.itheima.net',
+  baseURL: process.env.VUE_APP_BASE_API,
+  // baseURL: 'http://ihrm-java.itheima.net',
   // 请求超时的等待时间
   timeout: 1000 // request timeout
 })
 
 // 添加响应拦截器
 service.interceptors.response.use(function(response) {
-  console.log('响应结果拦截到了:', response)
+  // console.log('响应结果拦截到了:', response)
   if (response.data.success) {
-    return response
+    // 数据脱壳
+    return response.data
   } else {
     // 对响应数据做点什么
     // 服务器响应错误的时候, 但此时 axios 不会报错
@@ -21,7 +22,7 @@ service.interceptors.response.use(function(response) {
     return Promise.reject(new Error(response.data.message))
   }
 }, function(error) {
-  console.log('响应错误拦截到了:', error)
+  // console.log('响应错误拦截到了:', error)
   // 对响应错误做点什么
   return Promise.reject(error)
 })
