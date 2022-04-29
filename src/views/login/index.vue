@@ -8,15 +8,25 @@
         </h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="mobile">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
+        <!--
+          表单校验的三个步骤:
+          1. 定义规则
+          2. 应用规则(三要素)
+            a. el-form 的 model
+            b. el-form 的 rules
+            c. el-form-item 的 prop
+          3. 兜底校验
+
+         -->
         <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
+          ref="mobile"
+          v-model="loginForm.mobile"
+          placeholder="请输入手机号"
+          name="mobile"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -32,7 +42,7 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="请输入密码"
           name="password"
           tabindex="2"
           auto-complete="on"
@@ -55,14 +65,16 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+import { validMobile } from '@/utils/validate'
 
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+    // value: 校验的数据项的值
+    // callback: 回调函数, 直接调用不传参表示通过, 传入 error 对象表示不通过, 并设置错误消息
+    const validateMobile = (rule, value, callback) => {
+      if (!validMobile(value)) {
+        callback(new Error('请输入正确格式的手机号'))
       } else {
         callback()
       }
@@ -76,11 +88,19 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        mobile: '13800000002',
+        password: '123456'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        mobile: [
+          // required: true 必填项
+          // trigger: 触发时机(事件)
+          // validator: 自定义校验规则, 函数
+          // message: 错误提示消息
+          // pattern: 定义正则, 真正项目开发时其实用的比较少, 因为复用性不高
+          { required: true, trigger: 'blur', message: '请输入手机号' },
+          { trigger: 'blur', validator: validateMobile }
+        ],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loading: false,
