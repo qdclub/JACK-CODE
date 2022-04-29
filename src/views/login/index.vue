@@ -128,9 +128,21 @@ export default {
       // 兜底校验
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
+          // login(this.loginForm).then().catch()
           // this.$http() 这个代码封装到 login 函数中了
-          const res = await login(this.loginForm)
-          console.log(res)
+
+          // try 代码块包裹「可能」会出错的代码
+          // 网络请求就是可能正确也有可能错误
+          try {
+            const res = await login(this.loginForm)
+            console.log(res)
+            // 如果没有拦截器, 还需要在此处判断 success
+            // if (res.code !== 0) // 大事件
+            // if (!res.success) // 人资
+          } catch (e) {
+            // console.dir(e)
+            this.$message.error(e.message)
+          }
         }
       })
     }
