@@ -9,13 +9,21 @@ import request from '@/utils/request'
  */
 export function login(data) {
   return request({
-    url: '/api/sys/login',
+    url: '/sys/login',
     method: 'POST',
     data
   })
 }
 
-export function getInfo(token) {
+/**
+ * 获取用户信息 API
+ * @returns 用户信息
+ */
+export function getProfile() {
+  return request({
+    url: '/sys/profile',
+    method: 'POST'
+  })
 }
 
 export function logout() {

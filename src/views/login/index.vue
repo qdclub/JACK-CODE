@@ -55,6 +55,8 @@
 
       <el-button class="loginBtn" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
+      <el-button @click="getUserProfile">获取用户信息</el-button>
+
       <div class="tips">
         <span style="margin-right:20px;">账号: 13800000002</span>
         <span> 密码: 123456</span>
@@ -66,7 +68,7 @@
 
 <script>
 import { validMobile } from '@/utils/validate'
-import { login } from '@/api/user'
+import { getProfile, login } from '@/api/user'
 
 export default {
   name: 'Login',
@@ -135,7 +137,9 @@ export default {
           // 网络请求就是可能正确也有可能错误
           try {
             const res = await login(this.loginForm)
-            console.log(res)
+            // console.log(res)
+            // 调用 mutations 将 token 存入 vuex
+            this.$store.commit('user/updateToken', res.data)
             // 如果没有拦截器, 还需要在此处判断 success
             // if (res.code !== 0) // 大事件
             // if (!res.success) // 人资
@@ -145,6 +149,11 @@ export default {
           }
         }
       })
+    },
+    async getUserProfile() {
+      console.log('我要获取用户信息')
+      const res = await getProfile()
+      console.log(res)
     }
   }
 }

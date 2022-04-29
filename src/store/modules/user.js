@@ -1,7 +1,18 @@
 export default {
   namespaced: true,
-  state: {},
-  mutations: {},
+  state: {
+    token: ''
+  },
+  mutations: {
+    // 定义 mutations 来操作 token
+    updateToken(state, token) {
+      state.token = token
+    },
+    // 删除 token
+    removeToken(state) {
+      state.token = ''
+    }
+  },
   actions: {}
 }
 

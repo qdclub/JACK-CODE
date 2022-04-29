@@ -35,6 +35,14 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    proxy: {
+      // 当请求的地址是 http://localhost:9528/api 开头会触发代理机制
+      // 将请求转发到 localhost:3000 服务器上
+      // http://localhost:9528/api/sys/login => http://localhost:3000/api/sys/login
+      '/api': {
+        target: 'http://localhost:3000' // 目标服务器
+      }
     }
     // 在项目中开启 mock-server 实现数据模拟
     // before: require('./mock/mock-server.js')

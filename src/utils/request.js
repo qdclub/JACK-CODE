@@ -1,10 +1,36 @@
 import axios from 'axios'
+import store from '@/store'
 
 const service = axios.create({
+  // 当没有设置服务器地址时, 请求的就是当前服务器
+  // http://localhost:9528/api 是绝对路径
+  // /api 就是相对当前服务器的路径
+  // baseURL: '/api',
   baseURL: process.env.VUE_APP_BASE_API,
   // baseURL: 'http://ihrm-java.itheima.net',
   // 请求超时的等待时间
   timeout: 1000 // request timeout
+})
+
+// 添加请求拦截器
+service.interceptors.request.use(function(config) {
+  // 在发送请求之前做些什么
+  // 将 vuex 中的 token 携带到请求头中
+  // 获取 Vuex 中的 token
+  const token = store.state.user.token
+  // Authorization
+  // 先判断是否有 token, 如果有就携带
+  // 注意 Bearer 和 token 之间的空格
+  if (token) {
+    // 对象的两种访问属性的方法
+    // [] 里面可以写变量
+    // config.headers['Authorization']
+    config.headers.Authorization = 'Bearer ' + token
+  }
+  return config
+}, function(error) {
+  // 对请求错误做些什么
+  return Promise.reject(error)
 })
 
 // 添加响应拦截器

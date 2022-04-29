@@ -44,5 +44,5 @@ new Vue({
 
 // 测试访问环境变量
 // 这个环境变量是 node 提供的, 所以修改完环境变量后一定要重启服务器
-console.log(process.env.VUE_APP_NAME)
-console.log(process.env.VUE_APP_BASE_API)
+// console.log(process.env.VUE_APP_NAME)
+// console.log(process.env.VUE_APP_BASE_API)
