@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
+import router from '@/router'
 
 const service = axios.create({
   // 当没有设置服务器地址时, 请求的就是当前服务器
@@ -35,7 +36,7 @@ service.interceptors.request.use(function(config) {
 
 // 添加响应拦截器
 service.interceptors.response.use(function(response) {
-  // console.log('响应结果拦截到了:', response)
+  console.log('响应结果拦截到了:', response)
   if (response.data.success) {
     // 数据脱壳
     return response.data
@@ -49,6 +50,22 @@ service.interceptors.response.use(function(response) {
   }
 }, function(error) {
   // console.log('响应错误拦截到了:', error)
+  console.dir(error)
+  console.log('router:', router)
+  // router.currentRoute: 获取当前的路由信息, 完全等同于 $route
+  if (error.response.data.code === 10002) {
+    // token 失效
+    // 清空 token 和 userInfo
+    store.dispatch('user/logout')
+    // 跳转到登录页
+    // 当前在什么页面, 登录后还得跳回来
+    router.push({
+      path: '/login',
+      query: {
+        return_url: router.currentRoute.fullPath // 路由会帮咱们转码, 无需手动处理
+      }
+    })
+  }
   // 对响应错误做点什么
   return Promise.reject(error)
 })

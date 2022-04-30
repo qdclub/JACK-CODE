@@ -156,7 +156,14 @@ export default {
             await this.$store.dispatch('user/postLogin', this.loginForm)
             // 跳转到首页
             // this.$message.success('登录成功')
-            this.$router.push('/')
+            // this.$router.push('/')
+            // 不是直接跳到首页, 而是跳转至指定的页面
+            // 获取传递过来的 return_url
+            // 路由传参:
+            // path + query
+            // name + params
+            console.log(this.$route.query)
+            this.$router.push(this.$route.query.return_url || '/')
           } catch (e) {
             this.$message.error(e.message)
           }

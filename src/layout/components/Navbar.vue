@@ -78,7 +78,22 @@ export default {
           // this.$store.commit('user/removeUserInfo')
 
           // 跳转至登录页
-          this.$router.push('/login')
+          // fullPath 和 path 的区别
+          // fullPath 包括查询参数
+          // path 不包括查询参数
+          // console.log(this.$route.fullPath)
+          // 由于浏览器的 URL 的参数中不可以有中文和特殊符号( / & : ), 所以需要人工转码
+          // encodeURI : 可以转码中文, 但不能转码符号
+          // encodeURIComponent: 所有特殊字符都可以转码
+          // this.$router.push(`/login?return_url=${encodeURIComponent(this.$route.fullPath)}`)
+          // path + query
+          // path 会忽略 params, 所以必须使用 query 传参
+          this.$router.push({
+            path: '/login',
+            query: {
+              return_url: this.$route.fullPath // 路由会帮咱们转码, 无需手动处理
+            }
+          })
 
           // 提醒用户退出成功
           this.$message.success('退出成功')
