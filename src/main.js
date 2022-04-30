@@ -13,6 +13,9 @@ import store from './store'
 import router from './router'
 
 import '@/icons' // icon
+
+// import 变量 from '模块'
+// 只执行模块内的代码, 不需要引入其中的成员
 import '@/permission' // permission control
 
 /**

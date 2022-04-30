@@ -55,7 +55,7 @@
 
       <el-button class="loginBtn" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
-      <el-button @click="getUserProfile">获取用户信息</el-button>
+      <!-- <el-button @click="getUserProfile">获取用户信息</el-button> -->
 
       <div class="tips">
         <span style="margin-right:20px;">账号: 13800000002</span>
@@ -68,7 +68,7 @@
 
 <script>
 import { validMobile } from '@/utils/validate'
-import { getProfile } from '@/api/user'
+// import { getProfile } from '@/api/user'
 
 export default {
   name: 'Login',
@@ -152,18 +152,22 @@ export default {
           // 改造后: 在 actions 发请求, 组件内只需要调用 actions 即可
           // 如果需要捕获到异常, 要在 dispatch 前加 await 等待请求完成
           try {
+            // 一定要记得加 await 否则会出现登录失败但依然跳转到首页的意外情况
             await this.$store.dispatch('user/postLogin', this.loginForm)
+            // 跳转到首页
+            // this.$message.success('登录成功')
+            this.$router.push('/')
           } catch (e) {
             this.$message.error(e.message)
           }
         }
       })
-    },
-    async getUserProfile() {
-      console.log('我要获取用户信息')
-      const res = await getProfile()
-      console.log(res)
     }
+    // async getUserProfile() {
+    //   console.log('我要获取用户信息')
+    //   const res = await getProfile()
+    //   console.log(res)
+    // }
   }
 }
 </script>

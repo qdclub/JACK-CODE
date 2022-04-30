@@ -1,5 +1,6 @@
 import { setToken, getToken, removeToken } from '@/utils/auth'
 import { login } from '@/api/user'
+import { Message } from 'element-ui'
 // import { Message } from 'element-ui'
 
 export default {
@@ -29,6 +30,7 @@ export default {
       const res = await login(loginForm)
       // 将 token 交给 mutations 存入 state
       context.commit('updateToken', res.data)
+      Message.success(res.message)
       // } catch (e) {
       //   Message.error(e.message)
       // }

@@ -1,5 +1,47 @@
-// import router from './router'
-// import store from './store'
+import router from './router'
+import store from './store'
+
+// 定义白名单数组
+const whiteList = ['/login', '/404']
+
+// 注册全局前置守卫
+// 参数1: 到哪里去
+// 参数2: 从哪里来
+// 参数3: 是否放行的回调函数
+// 注意事项: 导航守卫一定要调用 next
+router.beforeEach((to, from, next) => {
+  // token 存在 vuex 中, 所以需要导入 store, 取 token
+  const token = store.state.user.token
+  // console.log(token)
+  // 权限控制兵分两路:
+  // 1. 有 token 的情况
+  //    判断是否去登录页, 如果是就强行跳转到首页, 如果不是就放行
+  // 2. 无 token 的情况
+  //    判断是否去登录页, 如果是就放行, 如果不是就强行跳转到登录页
+  if (token) {
+    if (to.path === '/login') {
+      console.log('您已经登陆了, 就别去登录页了, 强行给你跳到首页')
+      next('/')
+    } else {
+      next()
+    }
+  } else {
+    // 当未登录时, 要判断是否去白名单页面
+    // 白名单: 未登录时也可以访问的页面, 例如 登录 注册 404
+    // 如果用逻辑或来写, 将来可维护性不高
+    // if (to.path === '/login' || to.path === '/404') {
+    // if (whiteList.indexOf(to.path) > -1) { // 不好用, 还要记返回值
+    // whiteList.includes: 判断指定的值是否在数组中, 返回值是 boolean
+    if (whiteList.includes(to.path)) {
+      // 判断要去的页面在不在白名单, 如果在就放行
+      next()
+    } else {
+      console.log('您未登录, 就别到处溜达了, 强行给你跳到登录页')
+      next('/login')
+    }
+  }
+})
+
 // import { Message } from 'element-ui'
 // import NProgress from 'nprogress' // progress bar
 // import 'nprogress/nprogress.css' // progress bar style
