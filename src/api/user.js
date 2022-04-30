@@ -26,5 +26,16 @@ export function getProfile() {
   })
 }
 
+/**
+ * 获取用户基本信息 API
+ * @returns 用户信息
+ */
+export function getUserDetailById(id) {
+  return request({
+    url: `/sys/user/${id}`,
+    method: 'GET'
+  })
+}
+
 export function logout() {
 }

@@ -22,6 +22,10 @@ router.beforeEach((to, from, next) => {
   // 2. 无 token 的情况
   //    判断是否去登录页, 如果是就放行, 如果不是就强行跳转到登录页
   if (token) {
+    // 已登录, 页面跳转前发请求获取用户信息
+    // TODO: 需要加 await 暂时不加, 留做演示
+    store.dispatch('user/postProfile')
+
     if (to.path === '/login') {
       // console.log('您已经登陆了, 就别去登录页了, 强行给你跳到首页')
       next('/')

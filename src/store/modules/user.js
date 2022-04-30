@@ -1,5 +1,5 @@
 import { setToken, getToken, removeToken } from '@/utils/auth'
-import { login } from '@/api/user'
+import { login, getProfile, getUserDetailById } from '@/api/user'
 import { Message } from 'element-ui'
 // import { Message } from 'element-ui'
 
@@ -7,7 +7,8 @@ export default {
   namespaced: true,
   state: {
     // 首次加载在 Cookies 中取值
-    token: getToken() || ''
+    token: getToken() || '',
+    userInfo: {}
   },
   mutations: {
     // 定义 mutations 来操作 token
@@ -21,6 +22,9 @@ export default {
       state.token = ''
       // 删除 Cookies 中的 token
       removeToken()
+    },
+    updateUserInfo(state, userInfo) {
+      state.userInfo = userInfo
     }
   },
   actions: {
@@ -34,6 +38,12 @@ export default {
       // } catch (e) {
       //   Message.error(e.message)
       // }
+    },
+    async postProfile(context) {
+      const res1 = await getProfile()
+      const res2 = await getUserDetailById(res1.data.userId)
+      // console.log(res1, res2)
+      context.commit('updateUserInfo', { ...res1.data, ...res2.data })
     }
   }
 }
