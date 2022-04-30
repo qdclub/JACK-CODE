@@ -25,6 +25,9 @@ export default {
     },
     updateUserInfo(state, userInfo) {
       state.userInfo = userInfo
+    },
+    removeUserInfo(state) {
+      state.userInfo = {}
     }
   },
   actions: {
@@ -44,6 +47,12 @@ export default {
       const res2 = await getUserDetailById(res1.data.userId)
       // console.log(res1, res2)
       context.commit('updateUserInfo', { ...res1.data, ...res2.data })
+    },
+    logout(context) {
+      // 清空 token
+      context.commit('removeToken')
+      // 清空 userInfo
+      context.commit('removeUserInfo')
     }
   }
 }

@@ -13,8 +13,13 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="$store.state.user.userInfo.staffPhoto" class="user-avatar">
-          <span class="name">{{ $store.state.user.userInfo.username }}</span>
+          <!-- <img :src="$store.state.user.userInfo.staffPhoto" class="user-avatar"> -->
+          <!-- $store.getters.staffPhoto -->
+          <img :src="staffPhoto" class="user-avatar">
+          <!-- <span class="name">{{ $store.state.user.userInfo.username }}</span> -->
+          <!-- userInfo.username -->
+          <!-- $store.getters.username -->
+          <span class="name">{{ username }}</span>
           <i class="el-icon-caret-bottom" style="color:#fff" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -48,16 +53,39 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'username',
+      'staffPhoto'
     ])
   },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    logout() {
+      this.$confirm('确定退出吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async() => {
+          // 用户点了确定
+          // 变相的说明了, actions 不仅仅只能做异步操作, 同样也可以做同步操作, 可以将 actions 理解为一个函数封装而已
+          // 清空 token 和 userInfo
+          this.$store.dispatch('user/logout')
+          // 以下 2 行操作完全等同于上面一行的操作, 上面就是将代码放到 actions 函数中调用而已
+          // this.$store.commit('user/removeToken')
+          // this.$store.commit('user/removeUserInfo')
+
+          // 跳转至登录页
+          this.$router.push('/login')
+
+          // 提醒用户退出成功
+          this.$message.success('退出成功')
+
+          // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+        })
+        .catch(e => {})
     }
   }
 }
