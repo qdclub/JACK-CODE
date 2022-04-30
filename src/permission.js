@@ -1,5 +1,7 @@
 import router from './router'
 import store from './store'
+import NProgress from 'nprogress' // progress bar
+import 'nprogress/nprogress.css' // progress bar style
 
 // 定义白名单数组
 const whiteList = ['/login', '/404']
@@ -10,6 +12,7 @@ const whiteList = ['/login', '/404']
 // 参数3: 是否放行的回调函数
 // 注意事项: 导航守卫一定要调用 next
 router.beforeEach((to, from, next) => {
+  NProgress.start()
   // token 存在 vuex 中, 所以需要导入 store, 取 token
   const token = store.state.user.token
   // console.log(token)
@@ -20,8 +23,11 @@ router.beforeEach((to, from, next) => {
   //    判断是否去登录页, 如果是就放行, 如果不是就强行跳转到登录页
   if (token) {
     if (to.path === '/login') {
-      console.log('您已经登陆了, 就别去登录页了, 强行给你跳到首页')
+      // console.log('您已经登陆了, 就别去登录页了, 强行给你跳到首页')
       next('/')
+      // 如果已经登录了, 从首页访问登录页, 则不会进行路由跳转, 从首页到首页不算路由跳转
+      // 会导致后置守卫不触发的情况
+      NProgress.done()
     } else {
       next()
     }
@@ -36,15 +42,21 @@ router.beforeEach((to, from, next) => {
       // 判断要去的页面在不在白名单, 如果在就放行
       next()
     } else {
-      console.log('您未登录, 就别到处溜达了, 强行给你跳到登录页')
+      // console.log('您未登录, 就别到处溜达了, 强行给你跳到登录页')
       next('/login')
+      NProgress.done()
     }
   }
 })
 
+// 注册全局后置守卫
+// 在路由跳转后触发
+router.afterEach(() => {
+  // console.log('我是后置守卫, 您已经跳转路由了')
+  NProgress.done()
+})
+
 // import { Message } from 'element-ui'
-// import NProgress from 'nprogress' // progress bar
-// import 'nprogress/nprogress.css' // progress bar style
 // import { getToken } from '@/utils/auth' // get token from cookie
 // import getPageTitle from '@/utils/get-page-title'
 
