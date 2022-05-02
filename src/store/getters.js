@@ -11,6 +11,7 @@ const getters = {
   //   return state.user.userInfo.username
   // },
   username: state => state.user.userInfo.username,
-  staffPhoto: state => state.user.userInfo.staffPhoto
+  staffPhoto: state => state.user.userInfo.staffPhoto,
+  userId: state => state.user.userInfo.userId
 }
 export default getters

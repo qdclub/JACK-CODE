@@ -59,10 +59,14 @@ service.interceptors.response.use(function(response) {
     store.dispatch('user/logout')
     // 跳转到登录页
     // 当前在什么页面, 登录后还得跳回来
+    // console.log(router.currentRoute.fullPath)
+    // 利用 BOM 的 API, 直接获取地址栏的 hash 即可
+    // console.log(location.hash)
     router.push({
       path: '/login',
       query: {
-        return_url: router.currentRoute.fullPath // 路由会帮咱们转码, 无需手动处理
+        // substring 去除 #
+        return_url: location.hash.substring(1) // 路由会帮咱们转码, 无需手动处理
       }
     })
   }

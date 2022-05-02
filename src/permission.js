@@ -12,6 +12,7 @@ const whiteList = ['/login', '/404']
 // 参数3: 是否放行的回调函数
 // 注意事项: 导航守卫一定要调用 next
 router.beforeEach(async(to, from, next) => {
+  console.log(to.path, from.path)
   NProgress.start()
   // token 存在 vuex 中, 所以需要导入 store, 取 token
   const token = store.state.user.token
@@ -27,7 +28,13 @@ router.beforeEach(async(to, from, next) => {
     // 必须拿到用户信息后才可以进入首页, 否则不进去
     // 可以避免出现 token 过期后依然进入首页闪回登录页, 优化用户体验
     // 进入首页后一定可以拿到用户信息
-    await store.dispatch('user/postProfile')
+
+    // 加一个判断, 如果有 userId 了, 就不需要发请求了,
+    const userId = store.getters.userId
+    // 如果没有 userId 才发请求
+    if (!userId) {
+      await store.dispatch('user/postProfile')
+    }
 
     if (to.path === '/login') {
       // console.log('您已经登陆了, 就别去登录页了, 强行给你跳到首页')
