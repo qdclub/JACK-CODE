@@ -31,33 +31,26 @@ import Layout from '@/layout'
  * all roles can be accessed
  */
 
+// 一个对象就是一条路由规则
+import departments from './modules/departments'
+import employees from './modules/employees'
+import approvals from './modules/approvals'
+import settings from './modules/settings'
+import salarys from './modules/salarys'
+import social_securitys from './modules/social_securitys'
+import permissions from './modules/permissions'
+import attendances from './modules/attendances'
+
 // 动态路由表  synchronous 同步  asynchronous 异步
 export const asyncRoutes = [
-  {
-    path: '/departments',
-    component: Layout,
-    children: [
-      {
-        // 如果子路由的 path 设置为空字符串表示该路由的默认路由
-        path: '',
-        name: 'Departments',
-        component: () => import('@/views/departments/departments.vue'),
-        meta: { title: 'Departments', icon: 'dashboard' }
-      }
-    ]
-  },
-  {
-    path: '/employees',
-    component: Layout,
-    children: [
-      {
-        path: '',
-        name: 'Employees',
-        component: () => import('@/views/employees/employees.vue'),
-        meta: { title: 'Employees', icon: 'dashboard' }
-      }
-    ]
-  }
+  departments,
+  employees,
+  approvals,
+  settings,
+  salarys,
+  social_securitys,
+  permissions,
+  attendances
 ]
 
 // 静态路由表
@@ -82,7 +75,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'bank' }
     }]
   },
 

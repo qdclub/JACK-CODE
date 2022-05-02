@@ -1,0 +1,8 @@
+departments
+employees
+settings
+salarys
+social_securitys
+attendances
+approvals
+permissions

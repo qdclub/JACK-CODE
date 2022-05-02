@@ -31,6 +31,8 @@ export default {
       'sidebar'
     ]),
     routes() {
+      // router.options.routes: 路由规则数组, 路由表
+      // console.log(this.$router.options.routes)
       return this.$router.options.routes
     },
     activeMenu() {
