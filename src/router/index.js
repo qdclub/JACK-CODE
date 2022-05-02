@@ -30,6 +30,37 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+
+// 动态路由表  synchronous 同步  asynchronous 异步
+export const asyncRoutes = [
+  {
+    path: '/departments',
+    component: Layout,
+    children: [
+      {
+        // 如果子路由的 path 设置为空字符串表示该路由的默认路由
+        path: '',
+        name: 'Departments',
+        component: () => import('@/views/departments/departments.vue'),
+        meta: { title: 'Departments', icon: 'dashboard' }
+      }
+    ]
+  },
+  {
+    path: '/employees',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'Employees',
+        component: () => import('@/views/employees/employees.vue'),
+        meta: { title: 'Employees', icon: 'dashboard' }
+      }
+    ]
+  }
+]
+
+// 静态路由表
 export const constantRoutes = [
   {
     path: '/login',
@@ -62,7 +93,7 @@ export const constantRoutes = [
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
+  routes: [...constantRoutes, ...asyncRoutes]
 })
 
 const router = createRouter()
