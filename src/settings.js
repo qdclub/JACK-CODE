@@ -1,7 +1,7 @@
 module.exports = {
 
   // 设置网页标题
-  title: '非常牛逼的人资后台管理系统',
+  title: '人资',
 
   /** 设置固定定位的导航栏
    * @type {boolean} true | false

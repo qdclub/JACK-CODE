@@ -1,4 +1,5 @@
 <script>
+// Vue 生命周期时介绍过一个小知识点: 渲染组件可以看 template 标签或 render 函数
 export default {
   name: 'MenuItem',
   functional: true,
@@ -13,7 +14,10 @@ export default {
     }
   },
   render(h, context) {
+    // 获取父组件传递过来的 icon 和 title
     const { icon, title } = context.props
+
+    // 定义一个空数组: vnodes
     const vnodes = []
 
     if (icon) {

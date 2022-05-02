@@ -44,12 +44,12 @@ import attendances from './modules/attendances'
 // 动态路由表  synchronous 同步  asynchronous 异步
 export const asyncRoutes = [
   departments,
-  employees,
-  approvals,
   settings,
+  employees,
+  permissions,
+  approvals,
   salarys,
   social_securitys,
-  permissions,
   attendances
 ]
 

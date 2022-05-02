@@ -2,9 +2,15 @@ import router from './router'
 import store from './store'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
+import getPageTitle from './utils/get-page-title'
 
 // 定义白名单数组
 const whiteList = ['/login', '/404']
+
+// router.beforeEach((to, from, next) => {
+//   document.title = getPageTitle(to.meta.title)
+//   next()
+// })
 
 // 注册全局前置守卫
 // 参数1: 到哪里去
@@ -12,7 +18,7 @@ const whiteList = ['/login', '/404']
 // 参数3: 是否放行的回调函数
 // 注意事项: 导航守卫一定要调用 next
 router.beforeEach(async(to, from, next) => {
-  console.log(to.path, from.path)
+  // console.log(to.path, from.path)
   NProgress.start()
   // token 存在 vuex 中, 所以需要导入 store, 取 token
   const token = store.state.user.token
@@ -65,7 +71,12 @@ router.beforeEach(async(to, from, next) => {
 
 // 注册全局后置守卫
 // 在路由跳转后触发
-router.afterEach(() => {
+router.afterEach((to, from) => {
+  // $router 做编程式导航跳转的
+  // to from 这些都是 $route 路由信息对象
+  // console.log(to, from)
+  // document.title = `人资 - ${to.meta.title}`
+  document.title = getPageTitle(to.meta.title)
   // console.log('我是后置守卫, 您已经跳转路由了')
   NProgress.done()
 })

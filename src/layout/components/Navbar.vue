@@ -63,6 +63,7 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     logout() {
+      // console.log('我是 logout')
       this.$confirm('确定退出吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
