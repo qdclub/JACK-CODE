@@ -46,7 +46,7 @@
                         操作<i class="el-icon-arrow-down" />
                       </span>
                       <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item @click.native="hAdd">添加子部门</el-dropdown-item>
+                        <el-dropdown-item @click.native="hAdd(data.id)">添加子部门</el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>
                   </el-col>
@@ -63,7 +63,7 @@
       :close-on-press-escape="false"
       :visible.sync="showDialog"
     >
-      <AddOrEdit />
+      <AddOrEdit :id="curId" @success="hSuccess" />
     </el-dialog>
   </div>
 </template>
@@ -86,7 +86,8 @@ export default {
   data() {
     return {
       list: [],
-      showDialog: false
+      showDialog: false,
+      curId: '' // 当前被点击的部门 id
       // list: [{
       //   name: '财务部',
       //   manager: '刘备',
@@ -149,8 +150,21 @@ export default {
         console.log('获取组织架构失败, 原因:', e)
       }
     },
-    hAdd() {
+    hAdd(id) {
+      // 显示 dialog
       this.showDialog = true
+
+      // 将当前点击的部门 id 传给子组件
+      console.log(id)
+      this.curId = id
+    },
+    hSuccess() {
+      // 收到子组件通知的成功, 报喜
+      // 关闭 dialog
+      this.showDialog = false
+
+      // 获取最新的数据
+      this.loadDepartments()
     }
   }
 }
