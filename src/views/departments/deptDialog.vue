@@ -26,7 +26,11 @@
 
 <script>
 import { getEmployeeSimple } from '@/api/employees'
-import { addDepartment, getDepartmentById } from '@/api/departments'
+import {
+  addDepartment,
+  getDepartmentById,
+  updateDepartment
+} from '@/api/departments'
 
 export default {
   name: 'AddOrEdit',
@@ -58,12 +62,34 @@ export default {
     this.loadDepartment()
   },
   methods: {
-    async hSubmit() {
-      // if (this.isEdit) {
-      //   // 做编辑的逻辑
-      // } else {
-      //   // 做添加的逻辑
-      // }
+    // 当用户点击确定时触发
+    hSubmit() {
+      // 根据当前的状态来决定添加还是编辑
+      if (this.isEdit) {
+        // 做编辑的逻辑
+        this.doEdit()
+      } else {
+        // 做添加的逻辑
+        this.doAdd()
+      }
+    },
+    async doEdit() {
+      try {
+        // 1. 兜底校验 (暂时不做)
+        // 2. 发请求拿结果
+        const res = await updateDepartment(this.form)
+
+        // 3. 根据结果提醒用户
+        this.$message.success(res.message)
+
+        // 4. 关闭 dialog
+        // 5. 通知父组件更新
+        this.$emit('success')
+      } catch (e) {
+        this.$message.error(e.message)
+      }
+    },
+    async doAdd() {
       try {
         // 用户点击了确定
         // 1. 兜底校验 (暂时不做)

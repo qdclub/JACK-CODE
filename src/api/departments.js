@@ -33,3 +33,15 @@ export function getDepartmentById(id) {
     method: 'GET'
   })
 }
+
+/**
+ * 根据 ID 查询部门详情
+ * @returns 部门详情
+ */
+export function updateDepartment(data) {
+  return request({
+    url: '/company/department/' + data.id,
+    method: 'PUT',
+    data
+  })
+}
