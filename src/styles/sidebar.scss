@@ -103,6 +103,14 @@
       }
     }
 
+    // 导航高亮
+    .is-active {
+      background-color: $menuHover !important;
+      span, svg {
+        color: $menuActiveText !important;
+      }
+    }
+
     .is-active>.el-submenu__title {
       color: $subMenuActiveText !important;
     }

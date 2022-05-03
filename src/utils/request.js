@@ -36,7 +36,7 @@ service.interceptors.request.use(function(config) {
 
 // 添加响应拦截器
 service.interceptors.response.use(function(response) {
-  console.log('响应结果拦截到了:', response)
+  // console.log('响应结果拦截到了:', response)
   if (response.data.success) {
     // 数据脱壳
     return response.data
@@ -50,8 +50,8 @@ service.interceptors.response.use(function(response) {
   }
 }, function(error) {
   // console.log('响应错误拦截到了:', error)
-  console.dir(error)
-  console.log('router:', router)
+  // console.dir(error)
+  // console.log('router:', router)
   // router.currentRoute: 获取当前的路由信息, 完全等同于 $route
   if (error.response.data.code === 10002) {
     // token 失效
