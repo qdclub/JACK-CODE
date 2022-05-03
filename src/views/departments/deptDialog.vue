@@ -9,7 +9,8 @@
       </el-form-item>
       <el-form-item label="部门负责人">
         <el-select v-model="form.manager" style="width:80%" placeholder="请选择">
-          <el-option value="1" label="小美丽" />
+          <!-- value 值是为了提交给后台的, 所以需要看后台要什么, 咱们传什么 -->
+          <el-option v-for="item in employees" :key="item.id" :value="item.username" :label="item.username" />
         </el-select>
       </el-form-item>
       <el-form-item label="部门介绍">
@@ -24,6 +25,8 @@
 </template>
 
 <script>
+import { getEmployeeSimple } from '@/api/employees'
+
 export default {
   name: 'AddOrEdit',
   data() {
@@ -33,12 +36,21 @@ export default {
         code: '', // 部门编码
         manager: '', // 部门管理者
         introduce: '' // 部门介绍
-      }
+      },
+      employees: []
     }
+  },
+  created() {
+    this.loadEmployees()
   },
   methods: {
     hSubmit() {},
-    hCancel() {}
+    hCancel() {},
+    async loadEmployees() {
+      const res = await getEmployeeSimple()
+      // console.log(res)
+      this.employees = res.data
+    }
   }
 }
 </script>
