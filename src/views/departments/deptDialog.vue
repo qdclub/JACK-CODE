@@ -26,13 +26,17 @@
 
 <script>
 import { getEmployeeSimple } from '@/api/employees'
-import { addDepartment } from '@/api/departments'
+import { addDepartment, getDepartmentById } from '@/api/departments'
 
 export default {
   name: 'AddOrEdit',
   props: {
     id: {
       type: String,
+      required: true
+    },
+    isEdit: {
+      type: Boolean,
       required: true
     }
   },
@@ -48,10 +52,18 @@ export default {
     }
   },
   created() {
+    // 不论添加还是编辑都要发送
     this.loadEmployees()
+    // 只在编辑部门时发送
+    this.loadDepartment()
   },
   methods: {
     async hSubmit() {
+      // if (this.isEdit) {
+      //   // 做编辑的逻辑
+      // } else {
+      //   // 做添加的逻辑
+      // }
       try {
         // 用户点击了确定
         // 1. 兜底校验 (暂时不做)
@@ -75,6 +87,21 @@ export default {
       const res = await getEmployeeSimple()
       // console.log(res)
       this.employees = res.data
+    },
+    async loadDepartment() {
+      // 组件加载时判断是否为编辑, 决定是否发请求
+      // 判断当前到底是添加还是编辑
+      if (!this.isEdit) return
+
+      try {
+        // 发请求获取部门详情
+        const res = await getDepartmentById(this.id)
+        // console.log(res)
+        // 数据回填
+        this.form = res.data
+      } catch (e) {
+        console.log('获取部门详情失败, 原因是:', e)
+      }
     }
   }
 }

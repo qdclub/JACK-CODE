@@ -46,7 +46,8 @@
                         操作<i class="el-icon-arrow-down" />
                       </span>
                       <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item @click.native="hAdd(data.id)">添加子部门</el-dropdown-item>
+                        <el-dropdown-item @click.native="hAddOrEdit(data.id, false)">添加子部门</el-dropdown-item>
+                        <el-dropdown-item @click.native="hAddOrEdit(data.id, true)">编辑部门</el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>
                   </el-col>
@@ -63,7 +64,12 @@
       :close-on-press-escape="false"
       :visible.sync="showDialog"
     >
-      <AddOrEdit :id="curId" @success="hSuccess" />
+      <!--
+        烤串命名法: 常用于标签属性  Kebab-Case
+        驼峰命名法: 常用于变量      Camel-Case
+        这两种命名方式在组件使用 / Props 传值时可以互相替代使用
+       -->
+      <add-or-edit :id="curId" :is-edit="isEdit" @success="hSuccess" />
     </el-dialog>
   </div>
 </template>
@@ -87,7 +93,8 @@ export default {
     return {
       list: [],
       showDialog: false,
-      curId: '' // 当前被点击的部门 id
+      curId: '', // 当前被点击的部门 id
+      isEdit: ''
       // list: [{
       //   name: '财务部',
       //   manager: '刘备',
@@ -150,14 +157,38 @@ export default {
         console.log('获取组织架构失败, 原因:', e)
       }
     },
-    hAdd(id) {
+    hAddOrEdit(id, isEdit) {
       // 显示 dialog
       this.showDialog = true
 
       // 将当前点击的部门 id 传给子组件
-      console.log(id)
+      // console.log(id)
       this.curId = id
+
+      // 当前在添加的逻辑
+      this.isEdit = isEdit
     },
+    // hAdd(id) {
+    //   // 显示 dialog
+    //   this.showDialog = true
+
+    //   // 将当前点击的部门 id 传给子组件
+    //   // console.log(id)
+    //   this.curId = id
+
+    //   // 当前在添加的逻辑
+    //   this.isEdit = false
+    // },
+    // hEdit(id) {
+    //   // 显示 dialog
+    //   this.showDialog = true
+    //   // 将当前点击的部门 id 传给子组件
+    //   // console.log(id)
+    //   this.curId = id
+
+    //   // 当前在编辑的逻辑
+    //   this.isEdit = true
+    // },
     hSuccess() {
       // 收到子组件通知的成功, 报喜
       // 关闭 dialog
